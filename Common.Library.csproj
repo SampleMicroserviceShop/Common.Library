@@ -7,6 +7,9 @@
 	<PackageDescription>Common libraries used by other services.</PackageDescription>
 	<Authors>MH Karami</Authors>
 	<Company>SampleMicroserviceShop</Company>
+	<RepositoryUrl>
+	  https://github.com/SampleMicroserviceShop/Common.Library
+	</RepositoryUrl>
 
   </PropertyGroup>
 
