@@ -3,9 +3,9 @@ Common libraries used by other services.
 
 ## Create and publish package
 ```powershell
-$version="1.0.6"
+$version="1.0.7"
 $owner="SampleMicroserviceShop"
-dotnet pack --configuration Release -p:PackageVersion=$version -p:RepositoryUrl=https://github.com/$owner/Common.Library -o ..\..\packages\SampleMicroserviceShop
+dotnet pack --configuration Release -p:PackageVersion=$version -p:RepositoryUrl=https://github.com/$owner/Common.Library -o ..\..\packages\$owner
 ```
 
  ## Add the GitHub package source
