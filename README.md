@@ -3,14 +3,14 @@ Common libraries used by other services.
 
 ## Variables
 ```powershell
-$version="1.0.10"
+$version="1.0.12"
 $owner="SampleMicroserviceShop"
 $gh_pat="[PAT HERE]"
 ```
 
 ## Create and publish package
 ```powershell
-dotnet pack --configuration Release -p:PackageVersion=$version -o ..\..\packages\$owner
+dotnet pack --configuration Release -p:PackageVersion=$version -p:RepositoryUrl=https://github.com/$owner/Common.Library -o ..\..\packages\$owner
 ```
 
  ## Add the GitHub package source
