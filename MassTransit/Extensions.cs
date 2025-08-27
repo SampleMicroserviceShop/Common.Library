@@ -1,10 +1,6 @@
 ﻿using System.Reflection;
 using Common.Library.Settings;
-using GreenPipes;
-using GreenPipes.Configurators;
 using MassTransit;
-using MassTransit.Definition;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -41,7 +37,7 @@ public static class Extensions
             configure.UsingCustomRabbitMQ(configureRetries);
         });
 
-        services.AddMassTransitHostedService();
+        //services.AddMassTransitHostedService(); 
         return services;
     }
     public static IServiceCollection AddMassTransitWithServiceBus(
@@ -53,11 +49,11 @@ public static class Extensions
             configure.AddConsumers(Assembly.GetEntryAssembly());
             configure.UsingCustomAzureServiceBus(configureRetries);
         });
-        services.AddMassTransitHostedService();
+        //services.AddMassTransitHostedService();
         return services;
     }
     public static void UsingCustomMessageBroker(
-        this IServiceCollectionBusConfigurator configure,
+        this IBusRegistrationConfigurator configure,
         IConfiguration config,
         Action<IRetryConfigurator> configureRetries = null)
     {
@@ -75,7 +71,7 @@ public static class Extensions
     }
 
     public static void UsingCustomRabbitMQ(
-        this IServiceCollectionBusConfigurator configure,
+        this IBusRegistrationConfigurator configure,
         Action<IRetryConfigurator> configureRetries = null)
     {
         configure.UsingRabbitMq((context, configurator) =>
@@ -95,7 +91,7 @@ public static class Extensions
         });
     }
     public static void UsingCustomAzureServiceBus(
-        this IServiceCollectionBusConfigurator configure,
+        this IBusRegistrationConfigurator configure,
         Action<IRetryConfigurator> configureRetries = null)
     {
         configure.UsingAzureServiceBus((context, configurator) =>
