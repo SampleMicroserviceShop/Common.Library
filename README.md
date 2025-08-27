@@ -22,3 +22,7 @@ dotnet nuget add source --username USERNAME --password $gh_pat --store-password-
 ```powershell
 dotnet nuget push ..\..\packages\$owner\Common.Library.$version.nupkg --api-key $gh_pat --source "github"
 ```
+
+## Required repository secrets for GitHub workflow
+Repository Settings --> Secret and variables --> Actions --> New Repository Secret
+NuGetPackagePush : Created in GitHub user profile --> Settings --> Developer settings --> Personal access token
