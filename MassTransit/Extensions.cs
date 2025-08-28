@@ -15,6 +15,7 @@ public static class Extensions
         Action<IRetryConfigurator> configureRetries = null)
     {
         var serviceSettings = config.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
+        services.AddSingleton<ConsumeObserver>();
         switch (serviceSettings.MessageBroker?.ToUpper())
         {
             case ServiceBus:
@@ -80,6 +81,10 @@ public static class Extensions
             var serviceSettings = configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
             var rabbitMQSettings = configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>();
             configurator.Host(rabbitMQSettings.Host);
+
+            var observer = context.GetRequiredService<ConsumeObserver>();
+            configurator.ConnectConsumeObserver(observer);
+
             configurator.ConfigureEndpoints(
                 context,
                 new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
@@ -101,6 +106,10 @@ public static class Extensions
             var serviceBusSettings =
                 configuration.GetSection(nameof(ServiceBusSettings)).Get<ServiceBusSettings>();
             configurator.Host(serviceBusSettings.ConnectionString);
+
+            var observer = context.GetRequiredService<ConsumeObserver>();
+            configurator.ConnectConsumeObserver(observer);
+
             configurator.ConfigureEndpoints(context, new
                 KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
             if (configureRetries == null)
