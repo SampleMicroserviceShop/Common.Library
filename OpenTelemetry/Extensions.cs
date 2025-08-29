@@ -7,6 +7,7 @@ using Common.Library.MassTransit;
 using Common.Library.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -15,12 +16,13 @@ public static class Extensions
 {
     public static IServiceCollection AddTracing(this IServiceCollection services, IConfiguration config)
     {
+        var serviceSettings = config.GetSection(nameof(ServiceSettings))
+            .Get<ServiceSettings>();
+
         services.AddSingleton<ConsumeObserver>();
         services.AddOpenTelemetry()
             .WithTracing(tracerProviderBuilder =>
             {
-                var serviceSettings = config.GetSection(nameof(ServiceSettings))
-                    .Get<ServiceSettings>();
 
                 tracerProviderBuilder
                     .AddSource(serviceSettings.ServiceName)
@@ -38,6 +40,15 @@ public static class Extensions
                         options.Endpoint = new Uri($"http://{jaegerSettings.Host}:{jaegerSettings.Port}"); // gRPC
 
                     });
+            })
+            .WithMetrics(metrics =>
+            {
+                metrics
+                    .AddMeter(serviceSettings.ServiceName)
+                    .AddMeter("MassTransit")
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddPrometheusExporter();
             });
         return services;
     }

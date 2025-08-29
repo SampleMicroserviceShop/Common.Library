@@ -93,6 +93,7 @@ public static class Extensions
                 configureRetries = (retryConfigurator) => retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
             }
             configurator.UseMessageRetry(configureRetries);
+            configurator.UseInstrumentation(serviceName: serviceSettings.ServiceName);
         });
     }
     public static void UsingCustomAzureServiceBus(
@@ -118,6 +119,7 @@ public static class Extensions
                     TimeSpan.FromSeconds(5));
             }
             configurator.UseMessageRetry(configureRetries);
+            configurator.UseInstrumentation(serviceName: serviceSettings.ServiceName);
         });
     }
 
